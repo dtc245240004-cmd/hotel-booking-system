@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt phòng - Hotel Booking</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fa;
+        }
+
+        header {
+            background: #193f5b;
+            color: white;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 50px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #193f5b;
+            margin-top: 0;
+        }
+
+        .room-info {
+            background: #eef5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            background: #e6a23c;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #d99027;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #193f5b;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏨 HOTEL BOOKING</h1>
+
+    <nav>
+        <a href="/">Trang chủ</a>
+        <a href="/admin/">Quản trị</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <h2>ĐẶT PHÒNG KHÁCH SẠN</h2>
+
+    <div class="room-info">
+
+        <h3>Phòng {{ room.number }}</h3>
+
+        <p>
+            <strong>Loại phòng:</strong>
+            {{ room.get_room_type_display }}
+        </p>
+
+        <p>
+            <strong>Giá:</strong>
+            {{ room.price }} VNĐ / đêm
+        </p>
+
+        <p>
+            <strong>Sức chứa:</strong>
+            {{ room.capacity }} người
+        </p>
+
+        {% if room.description %}
+        <p>
+            <strong>Mô tả:</strong>
+            {{ room.description }}
+        </p>
+        {% endif %}
+
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Họ và tên</label>
+            <input
+                type="text"
+                name="full_name"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input
+                type="email"
+                name="email"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Số điện thoại</label>
+            <input
+                type="text"
+                name="phone"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Địa chỉ</label>
+            <input
+                type="text"
+                name="address"
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Ngày nhận phòng</label>
+            <input
+                type="date"
+                name="check_in"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Ngày trả phòng</label>
+            <input
+                type="date"
+                name="check_out"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Số khách</label>
+            <input
+                type="number"
+                name="guests"
+                min="1"
+                max="{{ room.capacity }}"
+                value="1"
+                required
+            >
+        </div>
+
+        <button type="submit">
+            XÁC NHẬN ĐẶT PHÒNG
+        </button>
+
+    </form>
+
+    <a class="back" href="/">
+        ← Quay lại trang chủ
+    </a>
+
+</div>
+
+</body>
+</html>

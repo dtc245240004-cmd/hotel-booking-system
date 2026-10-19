@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hotel Booking System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        header {
+            background: #173b57;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .hero {
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.45),
+                rgba(0, 0, 0, 0.45)
+            ),
+            linear-gradient(135deg, #2c5364, #203a43, #0f2027);
+
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+        }
+
+        .search-box {
+            max-width: 1000px;
+            margin: -40px auto 50px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .search-box form {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr) auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background: #e09f3e;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #c88728;
+        }
+
+        .rooms {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .rooms h2 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .room-image {
+            height: 180px;
+            background: linear-gradient(
+                135deg,
+                #d9a7c7,
+                #fffcdc
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+        }
+
+        .room-content {
+            padding: 20px;
+        }
+
+        .room-content h3 {
+            margin-top: 0;
+        }
+
+        .price {
+            color: #d17b00;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .info {
+            color: #666;
+            margin: 8px 0;
+        }
+
+        .book-button {
+            display: inline-block;
+            margin-top: 15px;
+            background: #173b57;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+
+        footer {
+            margin-top: 70px;
+            background: #173b57;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 800px) {
+            .search-box form {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>🏨 HOTEL BOOKING</h1>
+
+    <nav>
+        <a href="/">Trang chủ</a>
+        <a href="/admin/">Quản trị</a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <h2>ĐẶT PHÒNG KHÁCH SẠN</h2>
+
+    <p>
+        Tìm kiếm và đặt phòng nhanh chóng, thuận tiện
+    </p>
+
+</section>
+
+
+<section class="search-box">
+
+    <form method="get">
+
+        <div class="field">
+
+            <label>Ngày nhận phòng</label>
+
+            <input
+                type="date"
+                name="check_in"
+                required
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Ngày trả phòng</label>
+
+            <input
+                type="date"
+                name="check_out"
+                required
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Số khách</label>
+
+            <input
+                type="number"
+                name="guests"
+                min="1"
+                value="1"
+                required
+            >
+
+        </div>
+
+
+        <button type="submit">
+            TÌM PHÒNG
+        </button>
+
+    </form>
+
+</section>
+
+
+<section class="rooms">
+
+    <h2>PHÒNG KHÁCH SẠN</h2>
+
+
+    <div class="room-grid">
+
+        {% for room in rooms %}
+
+        <div class="room-card">
+
+            <div class="room-image">
+                🛏️
+            </div>
+
+
+            <div class="room-content">
+
+                <h3>
+                    Phòng {{ room.number }}
+                </h3>
+
+
+                <div class="info">
+
+                    {{ room.get_room_type_display }}
+
+                </div>
+
+
+                <div class="price">
+
+                    {{ room.price }} VNĐ / đêm
+
+                </div>
+
+
+                <div class="info">
+
+                    Sức chứa:
+                    {{ room.capacity }} người
+
+                </div>
+
+
+                <div class="info">
+
+                    Trạng thái:
+                    {{ room.get_status_display }}
+
+                </div>
+
+
+                <a
+                    class="book-button"
+                    href="/booking/{{ room.id }}/"
+                >
+                    ĐẶT PHÒNG
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>
+            Hiện chưa có phòng nào.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    Hotel Booking System
+
+    <br>
+
+    Django + PostgreSQL + Docker
+
+</footer>
+
+
+</body>
+</html>
